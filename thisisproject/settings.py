@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "channels",
+    "core",
 ]
 
 MIDDLEWARE = [
@@ -114,9 +115,17 @@ CELERY_RESULT_SERIALIZER = "json"
 # Channels
 
 ASGI_APPLICATION = "thisisproject.routing.application"
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {"hosts": [("redis", 6379)]},
+    }
+}
+
+CELERY_BEAT_SCHEDULE = {
+    "get_joke": {
+        "task": "core.tasks.get_joke",
+        "schedule": 15.0
     }
 }
